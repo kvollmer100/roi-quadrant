@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive ROI Quadrant</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    .slider-container {
+      margin: 20px auto;
+      width: 80%;
+    }
+    #quadrant {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border: 2px solid #000;
+      margin: 0 auto;
+      background: linear-gradient(to right, transparent 50%, #ddd 50%),
+                  linear-gradient(to bottom, transparent 50%, #ddd 50%);
+    }
+    #dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    label {
+      display: inline-block;
+      width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ROI Quadrant: Upfront Effort vs. Overall Impact</h1>
+  <div class="slider-container">
+    <label for="xInput">Upfront Effort (0–10):</label>
+    <input type="range" id="xInput" min="0" max="10" value="5" step="0.1" />
+    <span id="xVal">5</span>
+  </div>
+  <div class="slider-container">
+    <label for="yInput">Overall Impact (0–10):</label>
+    <input type="range" id="yInput" min="0" max="10" value="5" step="0.1" />
+    <span id="yVal">5</span>
+  </div>
+  <div id="quadrant">
+    <div id="dot"></div>
+  </div>
+
+  <script>
+    const xInput = document.getElementById('xInput');
+    const yInput = document.getElementById('yInput');
+    const xVal = document.getElementById('xVal');
+    const yVal = document.getElementById('yVal');
+    const dot = document.getElementById('dot');
+    const quadrant = document.getElementById('quadrant');
+
+    function updateDot() {
+      const x = parseFloat(xInput.value);
+      const y = parseFloat(yInput.value);
+
+      xVal.textContent = x;
+      yVal.textContent = y;
+
+      const xPercent = x / 10;
+      const yPercent = 1 - y / 10;
+
+      const xPos = xPercent * quadrant.clientWidth;
+      const yPos = yPercent * quadrant.clientHeight;
+
+      dot.style.left = `${xPos}px`;
+      dot.style.top = `${yPos}px`;
+    }
+
+    xInput.addEventListener('input', updateDot);
+    yInput.addEventListener('input', updateDot);
+
+    updateDot();
+  </script>
+</body>
+</html>
